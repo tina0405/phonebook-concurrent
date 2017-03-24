@@ -6,18 +6,35 @@
 #include "phonebook_opt.h"
 #include "debug.h"
 
+
+char **Array;
+
+void create(int m,int n)
+{
+    Array =(char **)malloc(m*sizeof(char *)+m*n*sizeof(char));
+}
+void realease()
+{
+    free(Array);
+}
 entry *findName(char lastname[], entry *pHead)
 {
+    int i=0;
     size_t len = strlen(lastname);
     while (pHead) {
         if (strncasecmp(lastname, pHead->lastName, len) == 0
                 && (pHead->lastName[len] == '\n' ||
                     pHead->lastName[len] == '\0')) {
             pHead->lastName[len] = '\0';
-            if (!pHead->dtl)
-                pHead->dtl = (pdetail) malloc(sizeof(detail));
+            if (!pHead->dtl) {
+                Array[i++]=pHead->dtl;
+                if(i%8==0) {
+                    free(Array);
+                }
+            }
             return pHead;
         }
+
         DEBUG_LOG("find string = %s\n", pHead->lastName);
         pHead = pHead->pNext;
     }

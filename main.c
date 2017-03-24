@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     entry *entry_pool;
     pthread_t threads[THREAD_NUM];
     thread_arg *thread_args[THREAD_NUM];
-
+    create(10,50);
     /* Start timing */
     clock_gettime(CLOCK_REALTIME, &start);
     /* Allocate the resource at first */
@@ -182,14 +182,10 @@ int main(int argc, char *argv[])
         pHead = pHead->pNext;
         free(e);
     }
+
 #else
     /* Free the allocated detail entry */
-    e = pHead;
-    while (e) {
-        free(e->dtl);
-        e = e->pNext;
-    }
-
+    realease();
     free(entry_pool);
     for (int i = 0; i < THREAD_NUM; ++i)
         free(thread_args[i]);
